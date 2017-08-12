@@ -92,19 +92,18 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <audio id="notify" src="" preload></audio>
 <script>
-  // Settings
-  var use_custom_structure = true, // Must be enabled to utilize the following settings, and must not defy custom settings
-    timestamp_is_enabled = true, // False = turn off timestamping
-    use_absolute_time = true, // False = use relative
-    use_custom_nickname = true, // False = logged-in member name
-	use_custom_avatar = true, // Use field-set image
-    use_avatar = false, // False = no avatar. Uses logged-in member avatar
-    default_avatar_location = '', // Selector string for default avatar. Only required if use_avatar is true. Must point directly to avatar img element on the page - add it if need be and set to display:none;
-    // avatar class = 'sbr_url', nickname class = 'sbr_nn', message class = 'sbr_body'
+  // JQ Shoutbox, Dusty@forum.jcink.com. V0.1
+  var use_custom_structure = true,
+    timestamp_is_enabled = true,
+    use_absolute_time = true,
+    use_custom_nickname = true,
+	use_custom_avatar = true,
+    use_avatar = false,
+    default_avatar_location = '',
     cs = $('<div class="sbrow"><span class="sbmsg_wrap"><img class="sbr_url"><span class="sbr_time"></span><span class="sbr_nn"><a></a></span><span class="sbr_b_wrap"><p class="sbr_body"></p></span></span></div>'),
-    sb_timer = 5000, // Initial refresh timer
-    sb_decay_factor = 400, // Decay factor in milliseconds. Refresh time = (timer + (empty_refresh * decay factor)) Can be set to zero to turn off decay
-    sb_reset_decay = 40, // Refresh number to reset decay to zero
+    sb_timer = 5000,
+    sb_decay_factor = 400,
+    sb_reset_decay = 40,
     refresh_count = 0,
     empty_refresh = 0;
   $(function _initload() {
@@ -215,6 +214,7 @@
       var n = $(temp).find('div span').text(),
         o = $('#historycontainer').text();
       if (n != o) {
+	  empty_refresh = 0;
         if (use_custom_structure == true) {
           _cparse(data, function(str) {
             $('#shoutbox').html(str)
@@ -238,6 +238,7 @@
         }
       }
       $('#sbref').children().removeClass('fa-spin-4x')
+console.log(empty_refresh, refresh_count)
     })
   }
   $(document).on('click', '#sbref', function() {
@@ -261,7 +262,7 @@
     if (empty_refresh > sb_reset_decay) {
       empty_refresh = 0;
     }
-    window.setTimeout(_superfresh, sb_timer + (refresh_count * sb_decay_factor));
+    window.setTimeout(_superfresh, sb_timer + (empty_refresh * sb_decay_factor));
   }
   _superfresh();
 </script>

@@ -1,0 +1,287 @@
+<style>
+  #shoutbox {
+    height: 270px;
+    width: 100%;
+    overflow-y: scroll;
+  }
+  #iframe-shouts {
+    padding: 5px 4px 1px 4px;
+  }
+  .sbwraapbraapbraap {
+    width: 230px;
+    height: 400px;
+  }
+  .sbrow {
+    width: 100%;
+    margin: 6px 0px;
+    word-wrap: break-word;
+    display: inline-block;
+  }
+  .sbr_url {
+    float: left;
+    width: 50px;
+    margin-right: 5px;
+  }
+  .sbr_time {
+    text-align: right;
+    display: block;
+  }
+  .sbr_nn {
+    display: inline-block;
+    font-weight: bold;
+  }
+  .sbr_nn::after {
+    content: ": ";
+    margin-right: 3px;
+  }
+  .sbr_time {
+    text-align: right;
+    display: block;
+  }
+  #msginput {
+    vertical-align: middle;
+    height: 12px;
+  }
+  #sbrow2 {
+    padding: 4px 2px;
+    background: #e4e4e4;
+  }
+  #sbrow2 input {
+    height: 16px;
+  }
+  .sbmtitle {
+    border-bottom: 2px solid #c02942;
+    color: #3b8686;
+    padding: 10px 0 3px;
+    vertical-align: middle;
+    width: 100%;
+    text-align: right;
+    font-size: 24px;
+  }
+  #sbnn {
+    width: 30%;
+  }
+  #sburl {
+    width: 50%;
+  }
+  #sbref,
+  #sb_vol_control {
+    cursor: pointer;
+    color: gray;
+    padding: 3px;
+  }
+  .sbr_body {
+    width: 100%;
+    margin: 0px;
+  }
+  .sbr_b_wrap {
+    display: inline;
+    white-space: pre-line;
+  }
+  .fa-spin-4x {
+    -webkit-animation:fa-spin .5s infinite ease-in;
+    animation:fa-spin .5s infinite ease-in;
+  }
+  #sb_no_new {
+    display: none;
+    position: absolute;
+    font-size: 10px;
+    font-style: italic;
+  }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<audio id="notify" src="" preload></audio>
+<script>
+  // Settings
+  var use_custom_structure = true, // Must be enabled to utilize the following settings, and must not defy custom settings
+    timestamp_is_enabled = true, // False = turn off timestamping
+    use_absolute_time = true, // False = use relative
+    use_custom_nickname = true, // False = logged-in member name
+	use_custom_avatar = true, // Use field-set image
+    use_avatar = false, // False = no avatar. Uses logged-in member avatar
+    default_avatar_location = '', // Selector string for default avatar. Only required if use_avatar is true. Must point directly to avatar img element on the page - add it if need be and set to display:none;
+    // avatar class = 'sbr_url', nickname class = 'sbr_nn', message class = 'sbr_body'
+    cs = $('<div class="sbrow"><span class="sbmsg_wrap"><img class="sbr_url"><span class="sbr_time"></span><span class="sbr_nn"><a></a></span><span class="sbr_b_wrap"><p class="sbr_body"></p></span></span></div>'),
+    sb_timer = 5000, // Initial refresh timer
+    sb_decay_factor = 400, // Decay factor in milliseconds. Refresh time = (timer + (empty_refresh * decay factor)) Can be set to zero to turn off decay
+    sb_reset_decay = 40, // Refresh number to reset decay to zero
+    refresh_count = 0,
+    empty_refresh = 0;
+  $(function _initload() {
+    _mkcon().success(function(data) {
+      if (use_custom_structure == true) {
+        _cparse(data, function(str) {
+          $('#shoutbox').html(str)
+        })
+      } else {
+        var temp = $('<textarea></textarea>')
+        $(temp).html(data)
+        $('#shoutbox').html($(temp).find('div#iframe-shouts'));
+      }
+    })
+    if (use_custom_nickname == false) {
+      $('#sb_nn').remove();
+    }
+    if (use_custom_avatar == false) {
+      $('#sburl').remove();
+    }
+  })
+
+  function _mkcon() {
+    return $.ajax({
+      url: "/sb_iframe.php?step=D2",
+      type: 'GET'
+    })
+  };
+
+  function _cparse(data, callback) {
+    var frame = $('<div id="iframe-shouts"></div>'),
+      temp = $('<textarea></textarea>').html(data);
+    $('#historycontainer').empty()
+    $(temp).find('div span').each(function() {
+      var msg_arr = JSON.parse($(this).text())
+      a = cs.clone();
+      $('#historycontainer').append($(this).text())
+      a.addClass('user-' + msg_arr['id'])
+      a.find('.sbr_nn a').text(msg_arr['nn']).attr('href', '/index.php?showuser=' + msg_arr['id'])
+      a.find('.sbr_body').text(msg_arr['msg'])
+      a.find('.sbr_url').attr('src', msg_arr['avurl'])
+      if (timestamp_is_enabled == true) {
+        if (use_absolute_time == true) {
+          a.find('.sbr_time').text(msg_arr['time'])
+        } else {
+          a.find('.sbr_time').text(
+            $(this).parent().contents().filter(function() {
+              return this.nodeType == 3;
+            })[0].nodeValue);
+        }
+      }
+      frame.append(a)
+    })
+    callback(frame)
+  }
+  $(document).on('click', '#msgsend', function() {
+    if (use_custom_structure == true) {
+      var arr = {
+        avurl: '',
+        nn: '<!-- |name| -->',
+        msg: $('#msginput').val(),
+        id: '<!-- |id| -->',
+        time: ''
+      };
+      if (use_avatar == true) {
+        arr['avurl'] = $(default_avatar_location).attr('src');
+      } else if (use_custom_avatar == true) {
+        arr['avurl'] = $('#sburl').val();
+      }
+      if (use_custom_nickname == true && $('#sbnn').val()) {
+        arr['nn'] = $('#sbnn').val()
+      }
+      if (use_absolute_time == true) {
+        var objDate = new Date(),
+          locale = "en-gb",
+          timestamp = objDate.toLocaleString(locale, {
+            day: "numeric",
+            month: "short",
+            year: "2-digit",
+          }) + ', ' + objDate.toLocaleString(locale, {
+            hour12: true,
+            hour: "numeric",
+            minute: "numeric"
+          });
+        arr['time'] = timestamp;
+      }
+      var msg = JSON.stringify(arr);
+    } else {
+      var msg = $('#msginput').val()
+    }
+	if ($('#msginput').val()) {
+      $.post("/index.php?act=Shoutbox&viewing=d2iframe&submit=Shout", {
+        Post: msg
+      }).done(function() {
+        _refresh(msg);
+        $('#msginput').val('')
+      });
+	} else {
+	  alert('Please enter a message')
+	}
+  })
+
+  function _refresh(msg) {
+    $('#sbref').children().addClass('fa-spin-4x')
+    _mkcon().success(function(data) {
+      var temp = $("<textarea></textarea>");
+      $(temp).html(data)
+      var n = $(temp).find('div span').text(),
+        o = $('#historycontainer').text();
+      if (n != o) {
+        if (use_custom_structure == true) {
+          _cparse(data, function(str) {
+            $('#shoutbox').html(str)
+          })
+        } else {
+          $('#shoutbox').html($(temp).find('div#iframe-shouts'));
+        }
+        if (n != msg + o && refresh_count > 1) {
+          $('#notify')[0].play();
+        }
+	    $('#sb_no_new').hide()
+      } else {
+        empty_refresh++;
+        if (msg === 'mref') {
+	  var time = new Date().toLocaleString('en-gb', {
+            hour12: true,
+            hour: "numeric",
+            minute: "numeric"
+          });
+          $('#sb_no_new').fadeIn(200).children().text(time)
+        }
+      }
+      $('#sbref').children().removeClass('fa-spin-4x')
+    })
+  }
+  $(document).on('click', '#sbref', function() {
+    _refresh('mref');
+  })
+  $(document).on('click', '#sb_vol_control i.fa-volume-up', function() {
+    $(this).removeClass('fa-volume-up').addClass('fa-volume-down');
+    $('#notify')[0].volume = 0.4;
+  })
+  $(document).on('click', '#sb_vol_control i.fa-volume-down', function() {
+    $(this).removeClass('fa-volume-down').addClass('fa-volume-off');
+    $('#notify')[0].volume = 0.0;
+  })
+  $(document).on('click', '#sb_vol_control i.fa-volume-off', function() {
+    $(this).removeClass('fa-volume-off').addClass('fa-volume-up');
+    $('#notify')[0].volume = 1.0;
+  })
+  function _superfresh() {
+    _refresh();
+    refresh_count++;
+    if (empty_refresh > sb_reset_decay) {
+      empty_refresh = 0;
+    }
+    window.setTimeout(_superfresh, sb_timer + (refresh_count * sb_decay_factor));
+  }
+  _superfresh();
+</script>
+<div class="sbwraapbraapbraap">
+  <div class="sbmtitle">Shoutbox</div>
+  <span id="sb_no_new">No new messages (<span></span>)</span>
+  <div id="shoutbox">Loading..</div>
+  <div id="sbrow2">
+    <div id="sbr2-1">
+      <input type="text" id="sbnn" placeholder="Nickname">
+      <input type="text" id="sburl" placeholder="URL">
+    </div>
+    <div id="sbr2-2">
+      <input type="text" placeholder="Enter your message.." id="msginput" autocomplete="off">
+      <input type="button" value="Send" id="msgsend">
+      <span value="mref" id="sbref"><i class="fa fa-refresh" aria-hidden="true"></i>
+      </span>
+      <span id="sb_vol_control"><i class="fa fa-volume-up" aria-hidden="true"></i>
+      </span>
+    </div>
+  </div>
+</div>
+<textarea id="historycontainer" style="display:none;"></textarea>

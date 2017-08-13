@@ -1,12 +1,12 @@
   // Settings
-  var use_custom_structure = true, // Must be enabled to utilize the following settings, and must not defy custom settings
-    timestamp_is_enabled = true, // False = turn off timestamping
-    use_absolute_time = true, // False = use relative
-    use_custom_nickname = true, // False = logged-in member name
-	enable_avatar_image = true, // Defaults to logged-in member avatar
-	use_custom_avatar = false, // Use field-set image
-	use_html = true,
-	html_whitelist = ['b', 'i', 'a', 'img', 'div', 'span'],
+  var use_custom_structure = true,
+    timestamp_is_enabled = true,
+    use_absolute_time = true,
+    use_custom_nickname = true,
+    enable_avatar_image = true,
+    use_custom_avatar = false,
+    use_html = true,
+    html_whitelist = ['b', 'i', 'a', 'img', 'div', 'span'],
     default_avatar_location = '.cavatar img',
     cs = $('<div class="sbrow"><span class="sbmsg_wrap"><img class="sbr_url"><span class="sbr_time"></span><span class="sbr_nn"><a></a></span><span class="sbr_b_wrap"><p class="sbr_body"></p></span></span></div>'),
     sb_timer = 5000,
@@ -179,7 +179,6 @@
         }
       }
       $('#sbref').children().removeClass('fa-spin-4x')
-console.log(empty_refresh, refresh_count)
     })
   }
   $(document).on('click', '#sbref', function() {

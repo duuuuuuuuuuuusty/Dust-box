@@ -1,6 +1,6 @@
 # Dust-box
   * Requires JQuery 1.7.2+
-  * Supports CSS styling, including name, message, dates, images
+  * Supports CSS styling, including (user-specific) name, message, dates, images
   * Replicates C-Box appearance by default
   * Does not use iframes
 

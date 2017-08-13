@@ -155,12 +155,12 @@
       a.addClass('user-' + msg_arr['id'])
       a.find('.sbr_nn a').text(msg_arr['nn']).attr('href', '/index.php?showuser=' + msg_arr['id'])
       if (use_html == true) {
-        var str = msg_arr['msg'].replace(/\&\amp;amp;gt;/g, '>')
+        var str = msg_arr['msg'].replace(/\&\amp;amp;gt;/gi, '>')
         for (var i = 0; i < html_whitelist.length; i++) {
           var r1 = "\&\amp;amp;lt;" + html_whitelist[i],
             r2 = "\&\amp;amp;lt;/" + html_whitelist[i],
-            reg1 = new RegExp(r1, "g"),
-            reg2 = new RegExp(r2, "g"),
+            reg1 = new RegExp(r1, "gi"),
+            reg2 = new RegExp(r2, "gi"),
             m1 = "<" + html_whitelist[i],
             m2 = "<\/" + html_whitelist[i],
             nu = str.replace(reg1, m1).replace(reg2, m2),

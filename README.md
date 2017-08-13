@@ -6,7 +6,7 @@
 
 ## Installation
   * Copy and paste to webpage maker - use include keys.
-  * Ensure that the src attribute of audio#notify is filled
+  * Fill *src* attribute of *audio#notify* element
   * Configure settings
 
 **If you're using the setting to enable usage of the default forum avatar:**

@@ -14,7 +14,7 @@ Create an element on the page containing the JC Ink <!-- |avatar| --> variable. 
 Point the script variable *default_avatar_location* to this element using standard selector string notation (ie: '.defaultavatar img')
 
 ## Settings list
-  * use_custom_structure = Must be enabled to utilize the following settings, and must not defy custom settings
+  * use_custom_structure = Must be enabled to utilize (most of) the following settings
   * timestamp_is_enabled = Enable or disable message timestamping. Default option: relative time (ie: "7 minutes ago")
   * use_absolute_time = If enabled, use absolute time (ie: "7:59PM 8/11/2017")
   * use_custom_nickname = If enabled, use a user-filled nickname for the message. Will user forum name if field is un-filled

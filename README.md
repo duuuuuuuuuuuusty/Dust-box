@@ -11,7 +11,7 @@
   * Warning: Script contains HTML entities that may parse and break functionality if the webpage that the script is hosted on is edited
 
 **If you're using the setting to enable usage of the default forum avatar:**
-Create an element on the page containing the JC Ink <!-- |avatar| --> variable. You may set this to display:none;
+Create an element on the page containing the JC Ink < !-- |avatar| --> variable. You may set this to display:none;
 Point the script variable *default_avatar_location* to this element using standard selector string notation (ie: '.defaultavatar img')
 
 ## Settings list

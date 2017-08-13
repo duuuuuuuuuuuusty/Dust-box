@@ -8,6 +8,7 @@
   * Copy and paste to webpage maker - use include keys.
   * Fill *src* attribute of *audio#notify* element
   * Configure settings
+  * Warning: Script contains HTML entities that may parse and break functionality if the webpage that the script is hosted on is edited
 
 **If you're using the setting to enable usage of the default forum avatar:**
 Create an element on the page containing the JC Ink <!-- |avatar| --> variable. You may set this to display:none;

@@ -1,0 +1,113 @@
+<style>
+  #shoutbox {
+    height: 270px;
+    width: 100%;
+    overflow-y: scroll;
+  }
+  #iframe-shouts {
+    padding: 5px 4px 1px 4px;
+  }
+  .sbwraapbraapbraap {
+    width: 230px;
+    height: 400px;
+  }
+  .sbrow {
+    width: 100%;
+    margin: 6px 0px;
+    word-wrap: break-word;
+    display: inline-block;
+  }
+  .sbr_url {
+    float: left;
+    width: 50px;
+    margin-right: 5px;
+  }
+  .sbr_time {
+    text-align: right;
+    display: block;
+  }
+  .sbr_nn {
+    display: inline-block;
+    font-weight: bold;
+  }
+  .sbr_nn::after {
+    content: ": ";
+    margin-right: 3px;
+  }
+  .sbr_time {
+    text-align: right;
+    display: block;
+  }
+  #msginput {
+    vertical-align: middle;
+    height: 12px;
+  }
+  #sbrow2 {
+    padding: 4px 2px;
+    background: #e4e4e4;
+  }
+  #sbrow2 input {
+    height: 16px;
+  }
+  .sbmtitle {
+    border-bottom: 2px solid #c02942;
+    color: #3b8686;
+    padding: 10px 0 3px;
+    vertical-align: middle;
+    width: 100%;
+    text-align: right;
+    font-size: 24px;
+  }
+  #sbnn {
+    width: 30%;
+  }
+  #sburl {
+    width: 50%;
+  }
+  #sbref,
+  #sb_vol_control {
+    cursor: pointer;
+    color: gray;
+    padding: 3px;
+  }
+  .sbr_body {
+    width: 100%;
+    margin: 0px;
+  }
+  .sbr_b_wrap {
+    display: inline;
+    white-space: pre-line;
+  }
+  .fa-spin-4x {
+    -webkit-animation:fa-spin .5s infinite ease-in;
+    animation:fa-spin .5s infinite ease-in;
+  }
+  #sb_no_new {
+    display: none;
+    position: absolute;
+    font-size: 10px;
+    font-style: italic;
+  }
+</style>
+<audio id="notify" src="" preload></audio>
+<script src="https://raw.githubusercontent.com/duuuuuuuuuuuusty/Dust-box/master/JCF-JQ-SB.js"></script>
+<div class="sbwraapbraapbraap">
+  <div class="sbmtitle">Shoutbox</div>
+  <span id="sb_no_new">No new messages (<span></span>)</span>
+  <div id="shoutbox">Loading..</div>
+  <div id="sbrow2">
+    <div id="sbr2-1">
+      <input type="text" id="sbnn" placeholder="Nickname">
+      <input type="text" id="sburl" placeholder="URL">
+    </div>
+    <div id="sbr2-2">
+      <input type="text" placeholder="Enter your message.." id="msginput" autocomplete="off">
+      <input type="button" value="Send" id="msgsend">
+      <span value="mref" id="sbref"><i class="fa fa-refresh" aria-hidden="true"></i>
+      </span>
+      <span id="sb_vol_control"><i class="fa fa-volume-up" aria-hidden="true"></i>
+      </span>
+    </div>
+  </div>
+</div>
+<textarea id="historycontainer" style="display:none;"></textarea>

@@ -3,6 +3,7 @@
   * Supports CSS styling, including (user-specific) name, message, dates, images
   * Replicates C-Box appearance by default
   * Does not use iframes
+  * Implements channel-based filtering
 
 ## Installation
   * Copy and paste to webpage maker - use include keys.

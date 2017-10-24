@@ -22,6 +22,7 @@ Point the script variable *default_avatar_location* to this element using standa
   * use_custom_nickname = If enabled, use a user-filled nickname for the message. Will user forum name if field is un-filled
   * enable_avatar_image = Defaults to logged-in user's avatar
   * use_custom_avatar = If enabled, use a user-filled avatar for the message
+  * enable_channels = True/false. Append channels to #sbr1-0
   * use_html = Enable parsing of HTML in messages - utilizes html_whitelist - defaults to JC Ink's BB code
   * html_whitelist = Whitelisted HTML element types, in array format *['b', 'i', 'a', 'img', 'div', 'span']*,
   * default_avatar_location = Selector string for default avatar. Only required if enable_avatar_image is true, and use_custom_avatar is false. selector eg: '*.avatar-box img*'

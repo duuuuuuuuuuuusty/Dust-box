@@ -98,7 +98,7 @@
     use_custom_nickname = true, // False = logged-in member name
     enable_avatar_image = true, // Defaults to logged-in member avatar
     use_custom_avatar = true, // Use field-set image
-	enable_channels = true, // Enable chat channels
+    enable_channels = false, // Enable chat channels
     use_html = true,
     html_whitelist = ['b', 'i', 'a', 'img', 'div', 'span'],
     default_avatar_location = '.cavatar img',
@@ -114,7 +114,6 @@
         _cparse(data, function(str) {
           $('#shoutbox').html(str)
         })
-		$('.sbrow:not(.sbrow[channel='+$('.sbtabactive').attr('tab')+'])').addClass('sb_c_hidden')
       } else {
         var temp = $('<textarea></textarea>')
         $(temp).html(data)
@@ -126,6 +125,11 @@
     }
     if (use_custom_avatar == false) {
       $('#sburl').remove();
+    }
+    if (enable_channels == false) {
+      $('#sbr1-0').remove();
+    } else {
+      $('.sbrow:not(.sbrow[channel='+$('.sbtabactive').attr('tab')+'])').addClass('sb_c_hidden')    
     }
   })
 
@@ -319,6 +323,11 @@
 </script>
 <div class="sbwraapbraapbraap">
   <div class="sbmtitle">Shoutbox</div>
+  <div id="sbr1-0">
+    <span id="sb-tab1" class="sbtab sbtabactive" tab="announcements">Announcements</span>
+    <span id="sb-tab2" class="sbtab" tab="ic">In-Character</span>
+    <span id="sb-tab3" class="sbtab" tab="ooc">Out of Character</span>
+  </div>
   <span id="sb_no_new">No new messages (<span></span>)</span>
   <div id="shoutbox">Loading..</div>
   <div id="sbrow2">
@@ -329,6 +338,8 @@
     <div id="sbr2-2">
       <input type="text" placeholder="Enter your message.." id="msginput" autocomplete="off">
       <input type="button" value="Send" id="msgsend">
+  </div>
+  <div id="sbr2-3">
       <span value="mref" id="sbref"><i class="fa fa-refresh" aria-hidden="true"></i>
       </span>
       <span id="sb_vol_control"><i class="fa fa-volume-up" aria-hidden="true"></i>

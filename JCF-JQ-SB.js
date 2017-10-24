@@ -5,7 +5,7 @@
     use_custom_nickname = true, // False = logged-in member name
     enable_avatar_image = true, // Defaults to logged-in member avatar
     use_custom_avatar = true, // Use field-set image
-	enable_channels = true, // Enable chat channels
+    enable_channels = false, // Enable chat channels
     use_html = true,
     html_whitelist = ['b', 'i', 'a', 'img', 'div', 'span'],
     default_avatar_location = '.cavatar img',
@@ -21,7 +21,6 @@
         _cparse(data, function(str) {
           $('#shoutbox').html(str)
         })
-		$('.sbrow:not(.sbrow[channel='+$('.sbtabactive').attr('tab')+'])').addClass('sb_c_hidden')
       } else {
         var temp = $('<textarea></textarea>')
         $(temp).html(data)
@@ -33,6 +32,11 @@
     }
     if (use_custom_avatar == false) {
       $('#sburl').remove();
+    }
+    if (enable_channels == false) {
+      $('#sbr1-0').remove();
+    } else {
+      $('.sbrow:not(.sbrow[channel='+$('.sbtabactive').attr('tab')+'])').addClass('sb_c_hidden')    
     }
   })
 

@@ -2,10 +2,11 @@
   var use_custom_structure = true, // Must be enabled to utilize the following settings
     timestamp_is_enabled = true, // False = turn off timestamping
     use_absolute_time = true, // False = use relative
-    use_custom_nickname = true, // False = logged-in member name
+    use_custom_nickname = false, // False = logged-in member name
+	use_forum_presuffix = true, // Use the forum's member group prefixes and suffixes
     enable_avatar_image = true, // Defaults to logged-in member avatar
     use_custom_avatar = true, // Use field-set image
-    enable_channels = false, // Enable chat channels
+    enable_channels = true, // Enable chat channels
     use_html = true,
     html_whitelist = ['b', 'i', 'a', 'img', 'div', 'span'],
     default_avatar_location = '.cavatar img',
@@ -51,7 +52,7 @@
     var frame = $('<div id="iframe-shouts"></div>'),
       temp = $('<textarea></textarea>').html(data);
     $('#historycontainer').empty()
-    $(temp).find('div span').each(function() {
+    $(temp).find('div b + span').each(function() {
       try {
         var msg_arr = JSON.parse($(this).html())
       } catch (e) {
@@ -97,6 +98,9 @@
 		if (a.attr('channel') != $('.sbtabactive').attr('tab')) {
 		  a.addClass('sb_c_hidden')
 		}
+	  }
+	  if (use_custom_nickname == false && use_forum_presuffix == true) {
+	    a.find('.sbr_nn').html($(this).prev('b').html())
 	  }
       frame.append(a)
     })

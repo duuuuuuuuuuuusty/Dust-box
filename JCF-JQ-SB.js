@@ -169,7 +169,7 @@
     _mkcon().success(function(data) {
       var temp = $("<textarea></textarea>");
       $(temp).html(data)
-      var n = $(temp).find('div span').text(),
+      var n = $(temp).find('div b + span').text(),
         o = $('#historycontainer').text();
       if (n != o) {
         empty_refresh = 0;
@@ -202,15 +202,15 @@
   $(document).on('click', '#sbref', function() {
     _refresh('mref');
   })
-  $(document).on('click', '#sb_vol_control i.fa-volume-up', function() {
+  $(document).on('click', '#sb_vol_control .fa-volume-up', function() {
     $(this).removeClass('fa-volume-up').addClass('fa-volume-down');
     $('#notify')[0].volume = 0.4;
   })
-  $(document).on('click', '#sb_vol_control i.fa-volume-down', function() {
+  $(document).on('click', '#sb_vol_control .fa-volume-down', function() {
     $(this).removeClass('fa-volume-down').addClass('fa-volume-off');
     $('#notify')[0].volume = 0.0;
   })
-  $(document).on('click', '#sb_vol_control i.fa-volume-off', function() {
+  $(document).on('click', '#sb_vol_control .fa-volume-off', function() {
     $(this).removeClass('fa-volume-off').addClass('fa-volume-up');
     $('#notify')[0].volume = 1.0;
   })
